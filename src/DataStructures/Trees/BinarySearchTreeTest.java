@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BinarySearchTreeTest {
 
     @Test
-    void getMaxAndGetMin() {
+    void getMaxAndGetMin() throws EmptyTreeException {
         BinarySearchTree<Integer> anIntTree = new BinarySearchTree<>();
         anIntTree.insert(14);
         anIntTree.insert(12);

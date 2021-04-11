@@ -53,7 +53,7 @@ public class Tree<T extends Comparable<T>> implements BinaryTree<T> {
         return 1 + Math.max(heightL, heightR);
     }
 
-    public int getNumberOfLeaves(BinaryTree<T> aTree) { //Works?
+    public int getNumberOfLeaves(BinaryTree<T> aTree) {
         if(aTree.isEmpty()){
             return 0;
         }
@@ -224,6 +224,14 @@ public class Tree<T extends Comparable<T>> implements BinaryTree<T> {
             return true;
         }
         return occursInTree(treeA.getLeft(),treeB) || occursInTree(treeA.getRight(),treeB);
+    }
+
+    public void inorden(BinaryTree<T> a){
+        if(!a.isEmpty()){
+            inorden(a.getLeft());
+            System.out.println(a.getRoot());
+            inorden(a.getRight());
+        }
     }
 
 
