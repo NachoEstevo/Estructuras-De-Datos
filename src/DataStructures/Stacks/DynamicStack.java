@@ -45,4 +45,8 @@ public class DynamicStack<T> implements Stack<T>{
             this.pop();
         }
     }
+
+    public int getSize() {
+        return size;
+    }
 }

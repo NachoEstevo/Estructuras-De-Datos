@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class Ticket {
     int price;
-    int time;
+    Time time;
     int code;
-    public Ticket(int time){
-        this.time = time;
-        price = 5;
+    public Ticket(){
+        this.time = new Time();
+        price = 10;
         Random r = new Random( System.currentTimeMillis() );
         code = ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
     }
@@ -17,9 +17,9 @@ public class Ticket {
 
     public void setPrice(int price) { this.price = price;}
 
-    public int getTime() {return time;}
+    public String showTime() {return time.toString();}
 
-    public void setTime(int time) {this.time = time;}
+    public Time getTime(){return time;}
 
     public int getCode() {return code;}
 

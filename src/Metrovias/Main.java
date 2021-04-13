@@ -2,7 +2,8 @@ package Metrovias;
 import java.util.Scanner;
 /**Author Ignacio Estevo**/
 
-public class Simulation {
+public class Main {
+    private static Window[] windows;
 
     public static void main(String[] args) throws InvalidWindowException {
         createWindows();
@@ -16,18 +17,19 @@ public class Simulation {
     private static void createWindows() throws InvalidWindowException {
         Scanner input = new Scanner(System.in);
 
-            System.out.print("\n" + "------------------------------------" + "\n" +
-                    "Bienvenido a Metrovias" + "\n" +
-                    "\n" +
-                    "Ingrese la cantidad de ventanillas a simular: ");
+        System.out.print("\n" + "------------------------------------" + "\n" +
+                "Bienvenido a Metrovias" + "\n" +
+                "\n" +
+                "Ingrese la cantidad de ventanillas a simular: ");
 
-            int windows = input.nextInt();
-            if (windows > 5 && windows < 25){
-                for (int i = 0; i < windows; i++) {
-                    new Window();
+        int windowsAmount = input.nextInt();
+        windows = new Window[windowsAmount];
+        if (windowsAmount > 5 && windowsAmount < 25){
+            for (int i = 0; i < windowsAmount; i++) {
+                windows[i] = new Window();
             }
         }
-            else{ throw new InvalidWindowException("Ingresar una cantidad entre 5 y 25");}
+        else{ throw new InvalidWindowException("Ingresar una cantidad entre 5 y 25");}
     }
 
     public static void mainScreen(){
@@ -42,10 +44,11 @@ public class Simulation {
 
             switch (input.nextInt()) {
                 case 1 -> {
-                   //Avanzar 30 segundos
+                    fastForward30Sec();
                 }
                 case 2 -> {
                     System.out.println("Simulacion terminada");
+                    //print earnings
                     //System.exit(0);
                     return;
                 }
@@ -53,4 +56,11 @@ public class Simulation {
             }
         }
     }
+
+    private static void fastForward30Sec() {
+        for (Window w: windows) {
+
+        }
+    }
+
 }
