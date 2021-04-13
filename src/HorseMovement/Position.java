@@ -8,12 +8,12 @@ public class Position {
         this.row = row;
         this.column = column;
     }
-    public Position(String column, int row){
-        this.column = columnToNumber(column);
+    public Position(String column, int row) throws OutOfBoardException {
+        columnToNumber(column.toUpperCase());
         this.row = row;
     }
-    public Position(String column, String row){
-        this.column = columnToNumber(column);
+    public Position(String col, String row) throws OutOfBoardException {
+        columnToNumber(col.toUpperCase());
         this.row = Integer.parseInt(row);
     }
 
@@ -24,9 +24,10 @@ public class Position {
     public int getColumn() {
         return column;
     }
-    public String columnToString() {
 
-        switch (column) {
+    public String columnToString() throws OutOfBoardException {
+
+        switch (getColumn()) {
             case 1 -> { return "A"; }
             case 2 -> { return "B"; }
             case 3 -> { return "C"; }
@@ -35,35 +36,30 @@ public class Position {
             case 6 -> { return "F"; }
             case 7 -> { return "G"; }
             case 8 -> { return "H"; }
-            default -> {
-                System.out.println("Casilla invalida");
-                return null;
-            }
+            default -> {throw new OutOfBoardException("The value is not in the board");}
+        }
+
+    }
+    public void columnToNumber(String col) throws OutOfBoardException {
+
+        switch (col){
+            case "A" -> { this.column = 1; }
+            case "B" -> { this.column = 2; }
+            case "C" -> { this.column = 3; }
+            case "D" -> { this.column = 4; }
+            case "E" -> { this.column = 5; }
+            case "F" -> { this.column = 6; }
+            case "G" -> { this.column = 7; }
+            case "H" -> { this.column = 8; }
+            default -> {throw new OutOfBoardException("The value is not in the board");}
         }
     }
-    public int columnToNumber(String column){
-        switch (column){
-            case "A" -> { return 1; }
-            case "B" -> { return 2; }
-            case "C" -> { return 3; }
-            case "D" -> { return 4; }
-            case "E" -> { return 5; }
-            case "F" -> { return 6; }
-            case "G" -> { return 7; }
-            case "H" -> { return 8; }
-            default -> {
-                System.out.println("Casilla invalida");
-                return -1;
-            }
-        }
-    }
-    public String getPosition(){
-        return this.columnToString() + getRow();
-    }
+    public String getPosition() throws OutOfBoardException { return this.columnToString() + String.valueOf(getRow());}
 
     public String getNumberedPosition(){return  String.valueOf(getColumn()) +  String.valueOf(getRow());}
 
     public boolean isValid(){
         return (row >= 1 && row <= 8) && (column >= 1 && column <= 8);
     }
+
 }
