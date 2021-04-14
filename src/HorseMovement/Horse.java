@@ -33,7 +33,7 @@ int maxMoves = 4;
         possiblePositions = new Position[8];
         DynamicStack<Position> possibleMoves = new DynamicStack<>();
 
-        possiblePositions[0] = new Position(this.position.getColumn(), this.position.getColumn() +1);
+        possiblePositions[0] = new Position(this.position.getColumn() -2, this.position.getRow() +1);
         possiblePositions[1] = new Position(this.position.getColumn() -2, this.position.getRow() -1);
         possiblePositions[2] = new Position(this.position.getColumn() -1, this.position.getRow() +2);
         possiblePositions[3] = new Position(this.position.getColumn() +1, this.position.getRow() -2);
