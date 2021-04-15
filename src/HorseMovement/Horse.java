@@ -5,17 +5,20 @@ import DataStructures.Stacks.DynamicStack;
 public class Horse {
 public Position position;
 private Position[] possiblePositions;
+private Position initialPosition;
 int moveCounter = 0;
 int maxMoves = 4;
 
     public Horse(Position initialPosition){
         this.position = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     public Horse(){this.position = null; }
 
     public void setInitialPosition(Position pos){
         this.position = pos;
+        this.initialPosition = pos;
     }
 
     public String move(Position aPosition) throws OutOfMovesException, OutOfBoardException {//We couldnt get a random element from the stack so it wouldn't be repetitive.
@@ -29,18 +32,19 @@ int maxMoves = 4;
         return this.position.getPosition();
     }
 
-    public DynamicStack<Position> getPossibleMoves() {
+    public DynamicStack<Position> getPossibleMoves() {return getPossibleMoves(this.position);}
+    public DynamicStack<Position> getPossibleMoves(Position aPosition){
         possiblePositions = new Position[8];
         DynamicStack<Position> possibleMoves = new DynamicStack<>();
 
-        possiblePositions[0] = new Position(this.position.getColumn(), this.position.getColumn() +1);
-        possiblePositions[1] = new Position(this.position.getColumn() -2, this.position.getRow() -1);
-        possiblePositions[2] = new Position(this.position.getColumn() -1, this.position.getRow() +2);
-        possiblePositions[3] = new Position(this.position.getColumn() +1, this.position.getRow() -2);
-        possiblePositions[4] = new Position(this.position.getColumn() +1, this.position.getRow() +2);
-        possiblePositions[5] = new Position(this.position.getColumn() -1, this.position.getRow() -2);
-        possiblePositions[6] = new Position(this.position.getColumn() +2, this.position.getRow() +1);
-        possiblePositions[7] = new Position(this.position.getColumn() +2, this.position.getRow() -1);
+        possiblePositions[0] = new Position(aPosition.getColumn() -2, aPosition.getRow() +1);
+        possiblePositions[1] = new Position(aPosition.getColumn() -2, aPosition.getRow() -1);
+        possiblePositions[2] = new Position(aPosition.getColumn() -1, aPosition.getRow() +2);
+        possiblePositions[3] = new Position(aPosition.getColumn() +1, aPosition.getRow() -2);
+        possiblePositions[4] = new Position(aPosition.getColumn() +1, aPosition.getRow() +2);
+        possiblePositions[5] = new Position(aPosition.getColumn() -1, aPosition.getRow() -2);
+        possiblePositions[6] = new Position(aPosition.getColumn() +2, aPosition.getRow() +1);
+        possiblePositions[7] = new Position(aPosition.getColumn() +2, aPosition.getRow() -1);
 
         for (int i = 0; i < 8; i++) {
             if(possiblePositions[i].isValid()){
@@ -61,5 +65,9 @@ int maxMoves = 4;
 
     public int getMoveCounter() {
         return moveCounter;
+    }
+
+    public Position getInitialPosition() {
+        return initialPosition;
     }
 }
