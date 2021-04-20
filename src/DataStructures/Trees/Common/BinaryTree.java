@@ -1,4 +1,4 @@
-package DataStructures.Trees;
+package DataStructures.Trees.Common;
 
 public interface BinaryTree<T extends Comparable<T>> {
 

@@ -1,4 +1,4 @@
-package DataStructures.Trees;
+package DataStructures.Trees.Common;
 
 public class TreeNode<T> {
     public T value;

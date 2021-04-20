@@ -1,4 +1,4 @@
-package DataStructures.Trees;
+package DataStructures.Trees.BinarySearchTrees;
 
 public class Genome implements Comparable<Genome> {
     String organism_Code;

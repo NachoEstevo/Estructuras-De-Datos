@@ -13,6 +13,6 @@ TPs y Clase
  <ul><b>Tps</b>
   <li>Arboles Binarios</li>
   <li>Mini Blast</li>
-  <li>Metrovias</li>
+  <li>MetroviasTP</li>
   <li>Movimiento de Caballo</li>
   <li>TP R</li>

@@ -1,4 +1,4 @@
-package Metrovias;
+package MetroviasTP;
 
 public class Time {
     int hours, minutes, seconds;

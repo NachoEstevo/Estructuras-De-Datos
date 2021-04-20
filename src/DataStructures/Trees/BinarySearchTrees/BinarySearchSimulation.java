@@ -1,4 +1,7 @@
-package DataStructures.Trees;
+package DataStructures.Trees.BinarySearchTrees;
+
+import DataStructures.Trees.Common.ElementNotInTreeException;
+import DataStructures.Trees.Common.EmptyTreeException;
 
 public class BinarySearchSimulation {
 

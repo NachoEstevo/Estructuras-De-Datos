@@ -1,4 +1,9 @@
-package DataStructures.Trees;
+package DataStructures.Trees.BinaryTrees;
+
+import DataStructures.Queues.DynamicQueue;
+import DataStructures.Queues.EmptyQueueException;
+import DataStructures.Trees.Common.BinaryTree;
+import DataStructures.Trees.Common.TreeNode;
 
 import java.util.ArrayList;
 
@@ -20,13 +25,13 @@ public class Tree<T extends Comparable<T>> implements BinaryTree<T> {
 
     @Override
     public BinaryTree<T> getLeft(){
-        BinarySearchTree<T> t = new BinarySearchTree<>();
+        Tree<T> t = new Tree<>();
         t.root = root.left;
         return t;
     }
     @Override
     public BinaryTree<T> getRight(){
-        BinarySearchTree<T> t = new BinarySearchTree<>();
+        Tree<T> t = new Tree<>();
         t.root = root.right;
         return t;
     }
@@ -101,7 +106,7 @@ public class Tree<T extends Comparable<T>> implements BinaryTree<T> {
         if (aTree.isEmpty()) {
             return 0;
         }
-        if ((Integer) aTree.getRoot() % 3 == 0) {
+        if ((Integer) aTree.getRoot() % 3 != 0) {
             return sumOfMultiplesOf3(aTree.getLeft()) + (Integer) aTree.getRoot() + sumOfMultiplesOf3(aTree.getRight());
         }
         return -1;
@@ -226,16 +231,6 @@ public class Tree<T extends Comparable<T>> implements BinaryTree<T> {
         return occursInTree(treeA.getLeft(),treeB) || occursInTree(treeA.getRight(),treeB);
     }
 
-    public void inorden(BinaryTree<T> a){
-        if(!a.isEmpty()){
-            inorden(a.getLeft());
-            System.out.println(a.getRoot());
-            inorden(a.getRight());
-        }
-    }
-
-
-
     public ArrayList<T> frontierList(BinaryTree<T> aTree) {
         ArrayList<T> frontier = new ArrayList<>();
         if (aTree.isEmpty()) {
@@ -247,11 +242,52 @@ public class Tree<T extends Comparable<T>> implements BinaryTree<T> {
             frontier1.addAll(frontierList(aTree.getLeft()));
             return frontier1;
         }
-        if((aTree.getLeft().isEmpty()) && (aTree.getRight().isEmpty())){
+        if ((aTree.getLeft().isEmpty()) && (aTree.getRight().isEmpty())) {
             frontier.add(aTree.getRoot());
 
-        }return frontier;
+        }
+        return frontier;
+    }
 
+    //Orders
+    public void porNiveles(BinaryTree<T> a) throws EmptyQueueException {
+        DynamicQueue<BinaryTree<T>> q = new DynamicQueue<>();
+        q.enqueue(a);
+        while(!q.isEmpty()){
+            a = (BinaryTree<T>) q.getFront().getData();
+            System.out.print(a.getRoot() + " ");
+            if(!a.getLeft().isEmpty()){
+                q.enqueue(a.getLeft());
+            }
+            if(!a.getRight().isEmpty()){
+                q.enqueue(a.getRight());
+            }
+            q.dequeue();
+        }
+    }
+
+    public void inOrden(BinaryTree<T> a){
+        if(!a.isEmpty()){
+            inOrden(a.getLeft());
+            System.out.print(a.getRoot() + " ");
+            inOrden(a.getRight());
+        }
+    }
+
+    public void preOrden(BinaryTree<T> a){
+        if(!a.isEmpty()){
+            System.out.print(a.getRoot() + " ");
+            preOrden(a.getLeft());
+            preOrden(a.getRight());
+        }
+    }
+
+    public void postOrden(BinaryTree<T> a){
+        if(!a.isEmpty()){
+            postOrden(a.getLeft());
+            postOrden(a.getRight());
+            System.out.print(a.getRoot() + " ");
+        }
     }
 
 }

@@ -1,4 +1,9 @@
-package DataStructures.Trees;
+package DataStructures.Trees.BinarySearchTrees;
+
+import DataStructures.Trees.Common.BinaryTree;
+import DataStructures.Trees.Common.ElementNotInTreeException;
+import DataStructures.Trees.Common.EmptyTreeException;
+import DataStructures.Trees.Common.TreeNode;
 
 public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T> {
     TreeNode<T> root;

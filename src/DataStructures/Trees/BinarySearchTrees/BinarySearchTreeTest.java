@@ -1,5 +1,6 @@
-package DataStructures.Trees;
+package DataStructures.Trees.BinarySearchTrees;
 
+import DataStructures.Trees.Common.EmptyTreeException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
