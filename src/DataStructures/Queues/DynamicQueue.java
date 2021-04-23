@@ -13,31 +13,27 @@ public class DynamicQueue<T> implements Queue<T> {
 
     @Override
     public void enqueue(T newElement) {
-        Node<T> aNode = new Node<T>(newElement); //We create a new node containing the data to enqueue and pointing nowhere. Yet.
-        aNode.next = null;
-            if (!isEmpty()){
-                back.next = aNode;
+            Node<T> aux = new Node<T>(newElement, null);
+            if(isEmpty()){
+                front = aux;
             }
-            else{
-                front = aNode;
+            else {
+                back.next = aux;
             }
-            back = aNode;
+            back = aux;
             size++;
-    }
+        }
 
     @Override
     public T dequeue() throws EmptyQueueException {
-        if (size != 0) {
-            T toDequeue = (T) front.getData();
-            front = front.next;
-            size--;
-            return toDequeue;
-        }
-        else{//Queue is empty cannot return a value
+        if (isEmpty()) {
             throw new EmptyQueueException();
         }
+        T valueToReturn = front.getData();
+        front = front.next;
+        size--;
+        return valueToReturn;
     }
-
     @Override
     public int size() {
         return size;

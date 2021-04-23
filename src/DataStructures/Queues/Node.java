@@ -8,6 +8,10 @@ public class Node<T> {
         data = element;
         next = null;
     }
+    public Node(T value, Node<T> next) {
+        this.data = value;
+        this.next = next;
+    }
 
     public T getData() {return data;}
 

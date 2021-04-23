@@ -7,7 +7,6 @@ import DataStructures.Stacks.EmptyStackException;
 public class Metrovias {
 
     private  Window[] windows;
-    private DynamicStack<Passenger> calledPassengers;
     private int amountWindows;
     Time currentTime;
 
@@ -23,17 +22,32 @@ public class Metrovias {
             windows[i] = new Window();
         }
     }
-
-    public void callNext() throws EmptyQueueException { //First we see if a passenger should be called (50% chance), if true, we select a random window to call him
+    public void pass30Seconds() throws EmptyQueueException { //30 seconds are added on the clock. That time is taken as reference for newly arrived passengers
+        Passenger[] newlyArrived = new Passenger[5];
         currentTime.add30Seconds();
+        for (int i = 0; i < 5; i++) { // 5 passengers are created and assigned to a random window
+            newlyArrived[i] = new Passenger(currentTime);
+            int randWindow = (int) ((Math.random() * getAmountWindows())); //+1?
+            windows[randWindow].enqueuePassenger(newlyArrived[i]); //a random window gets a passenger
+        }
+        for (Window w: windows) {
+            System.out.println("Personas en ventana antes de llamar: " + w.getAmountWaitingPassengers());
+        }
+        callNext();
+        for (Window w: windows) {
+            System.out.println("Personas en ventana: " + w.getAmountWaitingPassengers());
+        }
+    }
+
+    private void callNext() throws EmptyQueueException { //We see if a passenger should be called (50% chance)
         for (Window w: windows) {
             int chanceToBeCalled = (int) ((Math.random() * 100)); //50% chance to be called or not
-            if (chanceToBeCalled >= 50) {
-                w.callPassenger();
+            if (chanceToBeCalled >= 50 && !w.buffer.isEmpty()) {
+                w.callPassenger(currentTime);
             }
         }
     }
-    public int getLastCalled(){
+    public int getLastCalled(){ // Number of people called in the las 30 seconds.
         int calledLastRound = 0;
         for (Window w: windows) {
             calledLastRound += w.getLastCalled();
@@ -45,7 +59,16 @@ public class Metrovias {
 
     public int getAmountWindows() {return amountWindows;}
 
-    public DynamicStack<Passenger> getCalledPassengers() {return calledPassengers;}
+    public DynamicStack<Ticket> gettotalTickets() throws EmptyStackException {
+        DynamicStack<Ticket> tickets = new DynamicStack<>();
+        for (Window w: windows) {
+            while (!w.getTickets().isEmpty()){
+                tickets.push(w.getTickets().peek());
+                w.tickets.pop();
+            }
+        }
+        return tickets;
+    }
 
     public int getTotalPassengers(){
         int totalPassengers = 0;
@@ -57,7 +80,7 @@ public class Metrovias {
     public int passengersInLine(){
         int passengersInLine = 0;
         for (Window w: windows) {
-            passengersInLine += w.getAmountWaitingPassengers();
+            passengersInLine += (w.getTotalPassengers() - w.getPassengersCalled());
         }
         return passengersInLine;
     }
@@ -68,16 +91,5 @@ public class Metrovias {
             totalPassengersCalled += w.getPassengersCalled();
         }
         return totalPassengersCalled;
-    }
-
-    public DynamicStack<Ticket> getTickets() throws EmptyStackException {
-        DynamicStack<Ticket> tickets = new DynamicStack<>();
-        for (Window w: windows) {
-            for (int i = 0; i < w.getCalledPassengers().getSize(); i++) {
-                tickets.push(w.getCalledPassengers().peek().getCurrentTicket());
-                w.calledPassengers.pop();
-            }
-        }
-        return tickets;
     }
 }

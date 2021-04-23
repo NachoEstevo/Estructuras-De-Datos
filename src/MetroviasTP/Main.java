@@ -18,7 +18,9 @@ public class Main {
 
     private static void showStack() throws EmptyStackException {
         System.out.println("Show stack...");
-        DynamicStack<Ticket> tickets = metrovia.getTickets();
+        DynamicStack<Ticket> tickets = metrovia.gettotalTickets();
+        System.out.println("Tickets totales: " + tickets.getSize());
+
         for (int i = 0; i < tickets.getSize(); i++) {
             Ticket currentTicket = tickets.peek();
             System.out.println("Ticket: " + i);
@@ -28,7 +30,6 @@ public class Main {
             System.out.println(" ");
             tickets.pop();
         }
-
     }
 
     private static void createWindows() throws InvalidWindowException, EmptyStackException {
@@ -54,7 +55,7 @@ public class Main {
 
             System.out.println("\n" + "------------------------------------" + "\n" +
                     "MetroviasTP" + "\n" +
-                    "\n" +
+                    "\n" + "Current time: " + metrovia.currentTime + "\n" +
                     "1. Avanzar 30 segundos" + "\n" +
                     "2. Terminar la simulacion" + "\n");
 
@@ -75,18 +76,9 @@ public class Main {
     }
 
     private static void fastForward30Sec() throws EmptyQueueException { //5 new people are enqueued in a random window and we call "Metrovias.callNext()" to see if they are called or not
-        Passenger[] newlyArrived = new Passenger[5];
         int peopleCalled = 0;
 
-        for (int i = 0; i < 5; i++) {
-            newlyArrived[i] = new Passenger();
-            int randWindow = (int) ((Math.random() * metrovia.getAmountWindows())); //+1?
-            windowsArr[randWindow].enqueuePassenger(newlyArrived[i]); //a random window gets a passenger
-        }
-        for (Window w: windowsArr) {
-            w.callPassenger();
-            //metrovia.callNext(); If this method is used it applies the 50% chance, but it is quite low to see results.
-        }
+        metrovia.pass30Seconds(); //This adds 30 seconds on the clock. 5 new passengers arrived and it is evaluated if they are called or not
 
         peopleCalled = metrovia.getLastCalled();
         System.out.println("The " + windowsArr.length + " windows called a total of " + peopleCalled + " passengers this time");
@@ -103,18 +95,11 @@ public class Main {
 
     private static void showAverageWaitTime() throws EmptyQueueException, EmptyStackException {
         float averageTime = 0;
-        /*for (Window w: windowsArr) {
-            averageTime += w.queueTimeAverageInMinutes();
+        for (Window w: windowsArr) {
+            averageTime += w.queueTimeAverageInSeconds();
         }
         averageTime = averageTime / windowsArr.length;
-*/
-        DynamicStack<Ticket> tickets = metrovia.getTickets();
-        int sizeTick =  tickets.getSize();
-        for (int i = 0; i < tickets.getSize(); i++) {
-            averageTime+= tickets.peek().getTime().getAverageInMinutes(1);
-            tickets.pop();
-        }
-        averageTime = averageTime/sizeTick;
+
         System.out.println("In average, the " + windowsArr.length + " windows, have an average waittime of " + averageTime/60 + " seconds");
     }
 

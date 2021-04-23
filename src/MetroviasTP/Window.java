@@ -7,9 +7,8 @@ import DataStructures.Stacks.EmptyStackException;
 
 public class Window {
     DynamicQueue<Passenger> buffer; //This is the waiting line. First in first to go to a window
-    DynamicStack<Passenger> calledPassengers;   //Ticket price set to 10
-    private Time waitTimeAverage;
-    private int earnings;
+    DynamicStack<Ticket> tickets;
+    private int earnings;           //Ticket price set to 10
     private int passengersCalled;
     private int totalPassengers;
     private int lastCalled;
@@ -17,72 +16,56 @@ public class Window {
 
     public Window() {
         buffer = new DynamicQueue<>();
-        calledPassengers = new DynamicStack<>();
+        tickets = new DynamicStack<>();
         earnings = 0;
-        passengersCalled = 0;
-        waitTimeAverage = new Time();
-        totalPassengers = 0;
-
+        passengersCalled = 0; //The amount of passengers attended in this window
+        totalPassengers = 0; // passengers called + passengers in line
     }
 
     public void enqueuePassenger(Passenger passenger) {
         buffer.enqueue(passenger);
-        passenger.assignTicket(new Ticket());
-        passenger.startTimer();
         totalPassengers++;
     }
 
-    public void callPassenger() throws EmptyQueueException { // I assume that when the passenger is called he/she instantly gets his ticket and ends the waittime.
+    public void callPassenger(Time metroviaTime) throws EmptyQueueException { // I assume that when the passenger is called he/she instantly gets his ticket and ends the waittime.
         lastCalled = 0;
+        Ticket aTicket;
 
-        if (!buffer.isEmpty()) {
-            Passenger called = (Passenger) buffer.getFront().getData();
+            Passenger called = buffer.dequeue(); //We dequeue him from the line
             earnings += 10;
             passengersCalled++;
             lastCalled++;
-            waitTimeAverage.sumTimes(called.getWaitTime());
-            buffer.dequeue(); //We dequeue him
-            calledPassengers.push(called);
-        }
+
+            //Tickets handling
+            aTicket = new Ticket((int) metroviaTime.substractTimesInSeconds(called.getTimeEnteredQueue())); //Calulates the waitTime of the passenger
+            called.assignTicket(aTicket); //We give the passenger the ticket
+            tickets.push(aTicket);       //We stack the called passengers ticket
     }
 
-    public int getTotalEarned() throws EmptyStackException {return earnings;}
+    public int getTotalEarned() throws EmptyStackException {return earnings;} //It can be made iterating through the tickets
 
-    public float queueTimeAverageInMinutes() throws EmptyQueueException, EmptyStackException {
-        DynamicStack<Passenger> auxStack = getCalledPassengers();
+    public float queueTimeAverageInSeconds() throws EmptyQueueException, EmptyStackException {
+        DynamicStack<Ticket> auxStack = getTickets();
         Time waitTime = new Time();
+
         for (int i = 0; i < auxStack.getSize(); i++) {
             if (!auxStack.isEmpty()) {
-                waitTime.sumTimes(auxStack.peek().getWaitTime());
+                waitTime.sumTimes(auxStack.peek().getTime()); //We add the time of every called person.
                 auxStack.pop();
             }
         }
-        return waitTime.getAverageInMinutes(getTotalPassengers());
+        return waitTime.getAverageInSeconds(passengersCalled);
     }
 
     public int getLastCalled() {return lastCalled;}
 
     public int getTotalPassengers() {return totalPassengers;}
 
-    public int getPassengersCalled() {return passengersCalled;}
+    public int getPassengersCalled() {return tickets.getSize();}
 
+    public DynamicStack<Ticket> getTickets(){ return tickets;}
 
-    /*public void addqueueTimePassenger() throws EmptyQueueException { //Does not work as intended. Breaks buffer
-        DynamicQueue<Passenger> queue1 = buffer;
-
-        for (int i = 0; i < queue1.size(); i++) {
-            if (!queue1.isEmpty()) {
-                Passenger current = (Passenger) queue1.dequeue();
-                current.add30Secs();
-            }
-        }
-    }*/
-    public DynamicStack<Passenger> getCalledPassengers(){ return calledPassengers;}
-
-    public int getAmountWaitingPassengers(){
-        return buffer.size();
-
-    }
+    public int getAmountWaitingPassengers(){return buffer.size();} // totalpassengers - calledpassengers
 
 }
 

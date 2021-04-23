@@ -25,7 +25,8 @@ public class HorseMovementTest {
                     "1. Elejir posicion inicial" + "\n" +
                     "2. Realizar proximo salto" + "\n" +
                     "3. Mostrar contenido de las pilas" + "\n" +
-                    "4. Salir" + "\n");
+                    "4. Simulacion automatica" + "\n" +
+                    "5. Salir" + "\n");
 
             String option = input.nextLine();
             switch (Integer.parseInt(option)) {
@@ -34,7 +35,7 @@ public class HorseMovementTest {
                     String pos = input.nextLine();
                     Position init = new Position(String.valueOf(pos.charAt(0)),Integer.parseInt(String.valueOf(pos.charAt(1))));
                     aHorse.setInitialPosition(init);
-                    board[aHorse.getPosition().getRow()-1][aHorse.getPosition().getColumn()-1] = "H" + aHorse.getMoveCounter();
+                    board[aHorse.getPosition().getRow()-1][aHorse.getPosition().getColumn()-1] = "H" + aHorse.moveCounter;
 
                 }
                 case 2 -> {
@@ -42,7 +43,7 @@ public class HorseMovementTest {
                     String newSquare = aHorse.move(aHorse.getPossibleMoves().peek());
                     System.out.println("The horse is now at: " + newSquare);
 
-                    board[aHorse.getPosition().getRow() - 1][aHorse.getPosition().getColumn() - 1] = "H" + aHorse.getMoveCounter();
+                    board[aHorse.getPosition().getRow() - 1][aHorse.getPosition().getColumn() - 1] = "H" + aHorse.moveCounter;
                     showBoard();
 
 
@@ -52,6 +53,18 @@ public class HorseMovementTest {
                     //showNextPossibleMove();
                 }
                 case 4 -> {
+                    for (int i = 0; i < 4; i++) {
+                        stacksArr[aHorse.getMoveCounter()] = aHorse.getPossibleMoves();
+                        String newSquare = aHorse.move(aHorse.getPossibleMoves().peek());
+                        System.out.println("The horse is now at: " + newSquare);
+
+                        board[aHorse.getPosition().getRow() - 1][aHorse.getPosition().getColumn() - 1] = "H" + aHorse.moveCounter;
+                        showBoard();
+                    }
+                    listMoves();
+                    return;
+                }
+                case 5 -> {
                     System.out.println("Simulacion terminada");
                     System.exit(0);
                     return;
@@ -62,15 +75,14 @@ public class HorseMovementTest {
     }
 
     private static void showNextPossibleMove() throws OutOfBoardException, EmptyStackException {
-
-        System.out.println("Initial Position ");
+        System.out.println("Initial Position: ");
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < stacksArr[j].getSize(); i++) {
                 System.out.println(stacksArr[j].peek().getPosition());
                 stacksArr[j].pop();
 
             }
-            System.out.println("Next Move");
+            System.out.println("Next Move: ");
         }
     }
 
@@ -86,13 +98,12 @@ public class HorseMovementTest {
         System.out.println("A B C D E F G H");
     }
 
-
     private static void listMoves() throws OutOfBoardException, EmptyStackException {listMoves(aHorse.getInitialPosition().getPosition(),0, aHorse.getInitialPosition().getPosition());}
 
     private static int listMoves(String position, int counter, String move) throws OutOfBoardException, EmptyStackException {
         DynamicStack<Position> miStack = aHorse.getPossibleMoves(new Position(String.valueOf(position.charAt(0)),String.valueOf(position.charAt(1))));
 
-        if (counter<2) {
+        if (counter<3) {
             while (miStack.getSize() != 0) {
                 String currentBox = miStack.peek().getPosition();
                 miStack.pop();
@@ -113,7 +124,6 @@ public class HorseMovementTest {
         return counter;
 
     }
-
     private static void simulationRequirements(){
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -121,6 +131,5 @@ public class HorseMovementTest {
             }
         }
     }
-
 
 }

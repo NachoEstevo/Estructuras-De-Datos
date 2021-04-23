@@ -6,8 +6,9 @@ public class Ticket {
     int price;
     Time time;
     int code;
-    public Ticket(){
-        this.time = new Time();
+
+    public Ticket(int waitTime){
+        this.time = new Time(waitTime);
         price = 10;
         Random r = new Random();
         code = ((1 + r.nextInt(2)) * 10000 + r.nextInt(1000));
