@@ -11,8 +11,7 @@ public class Window {
     private int earnings;           //Ticket price set to 10
     private int passengersCalled;
     private int totalPassengers;
-    private int lastCalled;
-
+    public int lastCalled;
 
     public Window() {
         buffer = new DynamicQueue<>();
@@ -31,15 +30,15 @@ public class Window {
         lastCalled = 0;
         Ticket aTicket;
 
-            Passenger called = buffer.dequeue(); //We dequeue him from the line
-            earnings += 10;
-            passengersCalled++;
-            lastCalled++;
+        Passenger called = buffer.dequeue(); //We dequeue him from the line
+        earnings += 10;
+        passengersCalled++;
+        lastCalled++;
 
-            //Tickets handling
-            aTicket = new Ticket((int) metroviaTime.substractTimesInSeconds(called.getTimeEnteredQueue())); //Calulates the waitTime of the passenger
-            called.assignTicket(aTicket); //We give the passenger the ticket
-            tickets.push(aTicket);       //We stack the called passengers ticket
+        //Tickets handling
+        aTicket = new Ticket((int) metroviaTime.substractTimesInSeconds(called.getTimeEnteredQueue())); //Calulates the waitTime of the passenger
+        called.assignTicket(aTicket); //We give the passenger the ticket
+        tickets.push(aTicket);       //We stack the called passengers ticket
     }
 
     public int getTotalEarned() throws EmptyStackException {return earnings;} //It can be made iterating through the tickets
@@ -56,8 +55,6 @@ public class Window {
         }
         return waitTime.getAverageInSeconds(passengersCalled);
     }
-
-    public int getLastCalled() {return lastCalled;}
 
     public int getTotalPassengers() {return totalPassengers;}
 

@@ -80,7 +80,7 @@ public class Main {
 
         metrovia.pass30Seconds(); //This adds 30 seconds on the clock. 5 new passengers arrived and it is evaluated if they are called or not
 
-        peopleCalled = metrovia.getLastCalled();
+        peopleCalled = metrovia.getPeopleCalledCurrent();
         System.out.println("The " + windowsArr.length + " windows called a total of " + peopleCalled + " passengers this time");
         System.out.println((metrovia.passengersInLine() + " are still waiting")); //Arreglar todavia no funciona
     }
