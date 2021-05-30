@@ -61,7 +61,6 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T> 
         }
     }
 
-
     public void insert(Comparable <T> x){
         root = insert(root, x);
     }
@@ -73,6 +72,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T> 
     }
 
     private TreeNode<T> insert (TreeNode <T> t, Comparable <T> x) { //Can we have repeated values??
+
         if (t == null){
             t = new TreeNode<>();
             t.value = (T) x;
@@ -89,16 +89,21 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T> 
         return search(root,x).value;
     }
 
+    public int k = 0;
     private TreeNode<T> search(TreeNode<T> t, Comparable<T> x) throws ElementNotInTreeException {
         if (!isEmpty()) {
-            if (x.compareTo(t.value) == 0)
+            if (x.compareTo(t.value) == 0 && exists(x))
                 return t;
-            else if (x.compareTo(t.value) < 0)
+            else if (x.compareTo(t.value) < 0 && exists(x)) {
+                k++;
                 return search(t.left, x);
-            else
+            }
+            else if (x.compareTo(t.value) > 0 && exists(x)) {
+                k++;
                 return search(t.right, x);
+            }
         }
-        else{throw new ElementNotInTreeException("The element is not in the tree");}
+        throw new ElementNotInTreeException("The element is not in the tree");
     }
 
     private boolean exists(TreeNode<T> t, Comparable<T> x) {
@@ -141,6 +146,15 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T> 
             return t;
         }
         else {throw new EmptyTreeException("The tree is empty, add elements before deleting");}
+    }
+
+    public int height(BinaryTree<T> aTree) {
+        if (aTree.isEmpty()) {
+            return -1;
+        }
+        int heightL = height(aTree.getLeft());
+        int heightR = height(aTree.getRight());
+        return 1 + Math.max(heightL, heightR);
     }
 }
 

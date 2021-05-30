@@ -23,6 +23,6 @@ public class Genome implements Comparable<Genome> {
 
     @Override
     public int compareTo(Genome gen) { //Redefine compareTo
-        return Integer.compare(0, this.getOrganism_Code().compareTo(getOrganism_Code()));
+        return this.getOrganism_Code().compareTo(gen.getOrganism_Code());
     }
 }
