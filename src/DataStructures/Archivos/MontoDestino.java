@@ -10,7 +10,6 @@ public class MontoDestino {
         this.descripcion = descripcion;
         montoDestino = 0;
     }
-
     public String getCodigoDeDestino() {
         return codigoDeDestino;
     }

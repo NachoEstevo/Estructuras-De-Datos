@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 public class ArchivoVentas {
         private File f;
         private RandomAccessFile raf;
-        private int sizeReg = 30;
+        private int sizeReg = 32; // String de 3 caracteres = 2 + 6.  6 ints = 6X4 -> 32
 
         public ArchivoVentas(String nombre)throws FileNotFoundException {
             f = new File(nombre);
@@ -23,41 +23,24 @@ public class ArchivoVentas {
             raf.writeInt(p.getDia());
             raf.writeInt(p.getMes());
             raf.writeInt(p.getAño());
-            //raf.writeBytes("\r\n");
         }
 
-        public void cerrar()  throws IOException {
-            raf.close();
-        }
+        public void cerrar()  throws IOException {raf.close();}
 
-        public Venta leer() throws IOException{
-            return new Venta(raf.readUTF(),raf.readInt(),raf.readInt(), raf.readInt(), raf.readInt(), raf.readInt(), raf.readInt());
-        }
+        public Venta leer() throws IOException{return new Venta(raf.readUTF(),raf.readInt(),raf.readInt(), raf.readInt(), raf.readInt(), raf.readInt(), raf.readInt());}
 
-        public long cantReg() throws IOException {
-            return raf.length()/sizeReg;
-        }
+        public long cantReg() throws IOException {return raf.length()/sizeReg;}
 
-        public long length () throws IOException {
-            return raf.length();
-        }
+        public long length () throws IOException {return raf.length();}
 
-        public void inicio() throws IOException{
-            raf.seek(0);
-        }
+        public void inicio() throws IOException{raf.seek(0);}
 
-        public void fin() throws IOException{
-            raf.seek(raf.length());
-        }
+        public void fin() throws IOException{raf.seek(raf.length());}
 
-
-        public void borrar() throws IOException {
-            f.delete();
-        }
+        public void borrar() throws IOException {f.delete();}
 
         public void renombrar(String nombre) throws IOException {
             File file = new File (nombre);
             f.renameTo(file);
         }
-
 }
